@@ -5,8 +5,8 @@
 
 new const Vault[ ] = "RegisterSystemSave";
 
-#define Prefix "^4[ ^3EmpireState ^4]^1"
-#define MenuPrefix "\r[\wEmpireState\r]\w"
+#define Prefix "^4[ ^3Server-Name ^4]^1"
+#define MenuPrefix "\r[\wServer-Name\r]\w"
 
 enum _:PlayerData
 {
@@ -18,7 +18,7 @@ enum _:PlayerData
 new pInfo[ 33 ][ PlayerData ];
 
 public plugin_init() {
-	register_plugin("Register System", "1.0", "[eTy]Magician");
+	register_plugin("Register System", "1.0", "Or");
 
 	register_clcmd("say", "CmdSay");
 	register_clcmd("say_team", "CmdSay");
@@ -30,16 +30,11 @@ public plugin_init() {
 public CmdSay( id )
 {
 	new szMsg[ 192 ], szArgs[ 3 ][ 32 ];
-	
 	read_argv( 1, szMsg, charsmax( szMsg ) );
-	
 	parse( szMsg, szArgs[ 0 ], 31, szArgs[ 1 ], 31, szArgs[ 2 ], 31 );
 	
-	if( equali( szArgs[ 0 ], "/login" ) )
-		return LoginMenu( id );
-		
-	if( equali( szArgs[ 0 ], "/register" ) )
-		return RegisterMenu( id );
+	if( equali( szArgs[ 0 ], "/login" ) ) return LoginMenu( id );
+	if( equali( szArgs[ 0 ], "/register" ) ) return RegisterMenu( id );
 		
 	if( pInfo[ id ][ Status ] != 2 )
 	{
@@ -195,15 +190,13 @@ public LoginMenu_handler(id, menu, item)
 
 public CmdPassword( id )
 {
-	if( pInfo[ id ][ Status ] == 2 )
-		return PLUGIN_HANDLED;
+	if( pInfo[ id ][ Status ] == 2 ) return PLUGIN_HANDLED;
 		
 	new szArgs[ 60 ];
 	read_args( szArgs, charsmax( szArgs ) );
 	remove_quotes( szArgs );
 	
-	if( strlen( szArgs ) < 3 || strlen( szArgs ) > 10 )
-		return PLUGIN_HANDLED;
+	if( strlen( szArgs ) < 3 || strlen( szArgs ) > 10 ) return PLUGIN_HANDLED;
 	
 	formatex( pInfo[ id ][ MenuPassword ], 59, "%s", szArgs);
 	
